@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Excel</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/excel-style.css">
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular-drag-and-drop-lists/angular-drag-and-drop-lists.min.js"></script>
+    <script src="app/main.js"></script>
+    <script src="app/controllers/excelDataController.js"></script>
+    <script src="app/services/excelService.js"></script>
+</head>
+<body ng-app="excelApp">
+<div class="container" id="page" ng-controller="ExcelController">
+
+  <div class="row">
+    <div class="col-md-6">
+      <h2>CrowdFire - Excel</h2>
+    </div>
+    <div class="col-md-6">
+      <br>
+      <button type="button" class="btn btn-primary" ng-click="addCoulum()">
+        <span class="glyphicon glyphicon-plus"></span> Add Column
+      </button>
+    </div>
+  </div>
+
+<div class="excel-container">
+<table>
+    <tbody dnd-list="list">
+        <tr>
+            <td></td>
+               <td ng-repeat = "(key, colData) in textData track by $id($index)"
+                dnd-draggable="colData[key].data"
+                dnd-moved="list.splice($index, 1)"
+                dnd-effect-allowed="move">
+            {{colData.colName}}
+            </td>
+            </tr>
+        <tr ng-repeat = "(colkey, textValue) in textData+1 track by $id($index)">
+            <td>{{colkey + 1}}</td>
+            <td ng-repeat = "(rowkey, textValue) in textData track by $id($index)">
+                <input id="{{textValue.data[colkey].rowPosition}}"
+                ng-model="textValue.data[colkey].value"
+                ng-mousedown="multiSelect(textValue.data[colkey].rowPosition)"
+                ng-mousedown="multiSelect(textValue.data[colkey].rowPosition)"
+                ng-mousedown="disableMultiSelect(textValue.data[colkey].rowPosition)"
+                ng-blur="saveText()">
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+
+</body>
+</html>
